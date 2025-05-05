@@ -23,7 +23,7 @@ public class Conect {
 
     private static Connection connection;
     
-     public static Connection conectar(){
+     public static Connection getConect(){
         try{
             //Se a conexao for nula OU a conexao for fechada
             //Ou seja, se eu ainda não estiver conectado
@@ -31,6 +31,7 @@ public class Conect {
                 connection = DriverManager.getConnection(URL, DB_USER, DB_PASSWORD);
                 System.out.println("Conectando ao banco");
                 criarTabela();
+                criarTabelaEntryDaily();
             }
         }catch(SQLException error){
             System.out.println("Error: " + error.getMessage());
@@ -52,8 +53,21 @@ public class Conect {
         }
     }
 
-    public static Connection getConect() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+     private static void criarTabelaEntryDaily() {
+    String sql = "CREATE TABLE IF NOT EXISTS entradas_diario ("
+            + "id INT AUTO_INCREMENT PRIMARY KEY, "
+            + "titulo VARCHAR(255) NOT NULL UNIQUE, "
+            + "texto TEXT NOT NULL, "
+            + "data VARCHAR(100) NOT NULL, "
+            + "user_id INT NOT NULL, "
+            + "FOREIGN KEY (user_id) REFERENCES usuarios(id))";
+    
+    try (Statement stmt = connection.createStatement()) {
+        stmt.execute(sql);
+    } catch (SQLException e) {
+        throw new RuntimeException("Erro ao criar tabela entry_daily", e);
     }
+}
+
     
 }
