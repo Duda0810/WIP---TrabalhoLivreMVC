@@ -9,12 +9,29 @@ package trabalhoMVC.view;
  * @author MARIAEDUARDACOSTABAT
  */
 public class ListDaily extends javax.swing.JFrame {
-
+private User user;
+    private DefaultListModel<String> model = new DefaultListModel<>();
+    private ArrayList<EntryDaily> entries = new ArrayList<>();
     /**
      * Creates new form ListDaily
      */
     public ListDaily() {
         initComponents();
+    }
+
+    public ListDaily(User user) {
+        this.user = user;
+        initComponents();
+        entriesList.setModel(model);
+        update();
+    }
+    
+    public void update() {
+        model.clear();
+        this.entries = EntryDailyController.listEntryUser(this.user.getId());
+        for (EntryDaily entry : this.entries) {
+            model.addElement(entry.getTitle());
+        }
     }
 
     /**
@@ -87,7 +104,8 @@ public class ListDaily extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddNewActionPerformed
-        // TODO add your handling code here:
+      new DailyScreen(user).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnAddNewActionPerformed
 
     /**
