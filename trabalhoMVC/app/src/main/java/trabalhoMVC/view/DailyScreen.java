@@ -17,20 +17,21 @@ import trabalhoMVC.model.User;
  */
 public class DailyScreen extends javax.swing.JFrame {
 
-    User user;
-    /**
-     * Creates new form Daily
-     */
-
-    private UserController UserController = new UserController();
-
+    private User user;
+    private EntryDaily entry;
+    
     public DailyScreen(User user) {
-    this.user = user;
-    initComponents();
-
-    carregarDiario(); // chama o método pra buscar e mostrar o conteúdo salvo
-}
-
+        this.user = user;
+        initComponents();    
+    }
+    public DailyScreen(User user, EntryDaily entry) {
+        this.user = user;
+        this.entry = entry;
+       
+        initComponents();   
+        txtDaily.setText(this.entry.getText());
+        txtTitle.setText(this.entry.getTitle());
+    }
     
 
     /**
@@ -97,18 +98,33 @@ public class DailyScreen extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        btnSave.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String texto = txtDaily.getText(); // pega o que foi escrito no JTextArea
-                String retorno = UserController.saveText(texto);
-                
-                JOptionPane.showMessageDialog(null, retorno);
-            }
-        });
+       String text = txtDaily.getText();
+       String title = txtTitle.getText();
+       
+       if (title.length() == 0) {
+           JOptionPane.showMessageDialog(null, " Preencha o Titulo ");
+           return;
+       }
+        
+        boolean success = false;
+        if (this.entry == null) {
+            success = EntryDailyController.createEntry(title, text, user.getId());         
+        } else {
+            
+            entry.setText(text);
+            success = EntryDailyController.updateTextEntry(entry);
+        }
+        
+        if (success) {
+            JOptionPane.showMessageDialog(null, " Foi salvo com sucesso! ");
+            new ListDaily(user).setVisible(true);
+            this.dispose();
+        }
+        else JOptionPane.showMessageDialog(null, " Não foi salvo corretamente! ");
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
+        new ListDaily(user).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnExitActionPerformed
 
