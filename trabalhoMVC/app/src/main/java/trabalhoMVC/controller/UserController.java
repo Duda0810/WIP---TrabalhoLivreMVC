@@ -4,8 +4,6 @@
  */
 package trabalhoMVC.controller;
 
-import java.io.FileWriter;
-import java.io.IOException;
 import trabalhoMVC.dao.UserDAO;
 import trabalhoMVC.model.User;
 
@@ -32,22 +30,10 @@ public class UserController {
       public static User validateLogin(String username, char[] charSenha){
        String senha = new String(charSenha).trim();
        User usuario = new User(username, senha);
-       userDAO.validateLogin(usuario);
+       Integer id = userDAO.validateLogin(usuario);
+        
+       if (id != null) usuario.setId(id);
+       
        return usuario;
    }
-      public static String saveText(String text){
-          try {
-            // salva no arquivo "diario.txt"
-            FileWriter writer = new FileWriter("txtDaily", true); // "true" pra adicionar no final do arquivo
-            writer.write(text + "\n\n"); // escreve o texto com uma quebra de linha dupla
-            writer.close();
-
-            return "Arquivo salvo com sucesso!";
-
-        } catch (IOException ex) {
-         return ex.getMessage();
-//   JOptionPane.showMessageDialog(null, "Erro ao salvar o texto: " + ex.getMessage());
-        }
-      }
-
 }
