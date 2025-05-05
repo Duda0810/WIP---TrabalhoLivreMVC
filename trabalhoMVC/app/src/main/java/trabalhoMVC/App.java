@@ -8,7 +8,7 @@ import trabalhoMVC.view.LoginScreen;
 
 public class App {
        public static void main(String[] args) {
-        Conect.conectar();
+        Conect.getConect();
         
          new LoginScreen().setVisible(true);
     }
