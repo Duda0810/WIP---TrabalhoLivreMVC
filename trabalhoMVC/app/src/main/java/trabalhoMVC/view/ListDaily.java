@@ -108,6 +108,39 @@ private User user;
         this.dispose();
     }//GEN-LAST:event_btnAddNewActionPerformed
 
+     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        String title = entriesList.getSelectedValue();
+        
+        if (title == null) { 
+            JOptionPane.showMessageDialog(null, "Selecione um item da lista");
+            return;
+        }
+        
+        boolean success = EntryDailyController.removeEntryByTitle(title);
+        
+        if (success) {   
+            JOptionPane.showMessageDialog(null, "Item removido com sucesso");
+            update();
+        } else {
+            JOptionPane.showMessageDialog(null, "Erro ao remover item");
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {
+         String title = entriesList.getSelectedValue();      
+        if (title == null) { 
+            JOptionPane.showMessageDialog(null, "Selecione um item da lista");
+            return;
+        }
+         for (EntryDaily currentEntry : entries) {
+            if (currentEntry.getTitle().equals(title)) {
+              new DailyScreen(user, currentEntry).setVisible(true);
+              this.dispose();
+              break;
+            }
+        }
+     }//GEN-LAST:event_btnEditActionPerformed
+
     /**
      * @param args the command line arguments
      */
