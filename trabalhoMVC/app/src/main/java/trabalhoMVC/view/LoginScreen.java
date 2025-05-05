@@ -1,3 +1,4 @@
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -114,13 +115,17 @@ public class LoginScreen extends javax.swing.JFrame {
           }//GEN-LAST:event_btnRegisterActionPerformed
 
     private void btnEnterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnterActionPerformed
-String username = txtUsername.getText().trim();
+       String username = txtUsername.getText().trim();
        User user = UserController.validateLogin (username, txtPassword.getPassword());
        
        if(user != null){
-           JOptionPane.showMessageDialog(this, "bem-vindo!" + username);
-           new DailyScreen(user).setVisible(true);
-            this.dispose();
+           if (user.getId() == 0) {
+                JOptionPane.showMessageDialog(this, "O usuário não está cadastrado");
+                return;
+           }
+           JOptionPane.showMessageDialog(this, "bem-vindo! " + username);
+           new ListDaily(user).setVisible(true);
+           this.dispose();
        }else{       
         JOptionPane.showConfirmDialog(this, "Login incorreto!");
        }
